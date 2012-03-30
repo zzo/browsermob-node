@@ -2,7 +2,7 @@
   "name": "browsermob-proxy",
   "description": "Javascript bindings for the browsermob-proxy",
   "keywords": ["selenium", "test", "testing", "proxy", "tests", "har"],
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Mark Ethan Trostler <mark@zzo.com>",
   "repository": {
     "type": "git",

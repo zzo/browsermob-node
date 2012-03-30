@@ -9,7 +9,7 @@ function Proxy(conf) {
     this.selPort = (conf && conf.selPort) || 4444;
 
     this.downstreamKbps = conf && conf.downstreamKbps;
-    this.upsreamKbps = conf && conf.upsreamKbps;
+    this.upstreamKbps = conf && conf.upstreamKbps;
     this.latency = conf && conf.latency;
 
     /*
@@ -39,7 +39,7 @@ Proxy.prototype = {
             if (!err) {
                 _this.startHAR(data.port, name, function(err, resp) {
                     if (!err) {
-                        selCB(_this.host +  data.port, function () {
+                        selCB(_this.host + ':' + data.port, function () {
                             _this.getHAR(data.port, function(err, resp) {
                                 _this.stop(data.port, function() {
                                     if (err) {
@@ -65,7 +65,7 @@ Proxy.prototype = {
         if (!cb) {
             cb = port;
         }
-        if (typeof(port) === 'Number') {
+        if (typeof(port) === 'number') {
             postData = 'port=' + port;
         }
 
@@ -90,7 +90,6 @@ Proxy.prototype = {
 
     startHAR: function(port, name, cb) {
         var _this = this
-            , limitObj = {}
         ;
 
         if (!cb) {
@@ -101,7 +100,7 @@ Proxy.prototype = {
         this.doReq('PUT', '/proxy/' + port + '/har', 'initialPageRef=' + name, 
             // Check if we need to add in limits
             function(err, data) {
-                var limit = false;
+                var limit = false, limitObj = {};
 
                 if (err) {
                     cb(err);
@@ -145,7 +144,7 @@ Proxy.prototype = {
             if (!err) {
                 _this.startHAR(data.port, url, function(err, resp) {
                     if (!err) {
-                        _this.selFunc(_this.host +  data.port, url, function () {
+                        _this.selFunc(_this.host + ':' +  data.port, url, function () {
                             _this.getHAR(data.port, function(err, resp) {
                                 _this.stop(data.port, function() {
                                     if (err) {
@@ -166,10 +165,10 @@ Proxy.prototype = {
          });
     },
 
-    doReq: function(method, url, data, cb) {
+    doReq: function(method, url, postData, cb) {
 
         if (!cb) { // for empty requests
-            cb = data;
+            cb = postData;
         }
 
         var options = {
@@ -192,9 +191,9 @@ Proxy.prototype = {
 
         req.on('error', cb);
 
-        if (typeof(data) === 'String') {
-            req.write(data);
-        }
+        if (typeof(postData) === 'string') {
+            req.write(postData);
+        } 
         req.end();
     }
 };
