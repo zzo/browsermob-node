@@ -7,6 +7,16 @@ function Proxy(conf) {
     this.port = (conf && conf.port) || 8080;
     this.selHost = (conf && conf.selHost) || 'localhost';
     this.selPort = (conf && conf.selPort) || 4444;
+
+    this.downstreamKbps = conf && conf.downstreamKbps;
+    this.upsreamKbps = conf && conf.upsreamKbps;
+    this.latency = conf && conf.latency;
+
+    /*
+     *  downstreamKbps - Sets the downstream kbps
+     *  upstreamKbps - Sets the upstream kbps
+     *  latency - Add the given latency to each HTTP request
+     */
 }
 
 Proxy.prototype = {
@@ -79,11 +89,37 @@ Proxy.prototype = {
     },
 
     startHAR: function(port, name, cb) {
+        var _this = this
+            , limitObj = {}
+        ;
+
         if (!cb) {
             cb = name;
             name = 'Page 1';
         }
-        this.doReq('PUT', '/proxy/' + port + '/har', 'initialPageRef=' + name, cb);
+
+        this.doReq('PUT', '/proxy/' + port + '/har', 'initialPageRef=' + name, 
+            // Check if we need to add in limits
+            function(err, data) {
+                var limit = false;
+
+                if (err) {
+                    cb(err);
+                } else {
+                    ['downstreamKbps', 'upstreamKbps', 'latency'].forEach(function(key) {
+                        if (_this[key]) {
+                            limitObj[key] = _this[key];
+                            limit = true;
+                        }
+                    });
+                    if (limit) {
+                        _this.limit(port, limitObj, cb);
+                    } else {
+                        cb(null);
+                    }
+                }
+            }
+        );
     },
 
     newPage: function(port, name, cb) {
