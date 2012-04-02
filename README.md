@@ -12,7 +12,7 @@ OK - now you're on the right track!
 Quick Start
 -----------
 
-Javascript:
+```Javascript
 
     var Proxy = require('browsermode-proxy').Proxy;
         , proxy = new Proxy();
@@ -24,11 +24,12 @@ Javascript:
             fs.writeFileSync('yahoo.com.har', data, 'utf8');
         }
     });
+```
 
 Details
 -------
 
-You need to install and start the browsermob-proxy available above:
+You need to install and start the [browsermob-proxy](https://github.com/webmetrics/browsermob-proxy) available above:
 
     % /bin/sh bin/browsermob-proxy &
 
