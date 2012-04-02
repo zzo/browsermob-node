@@ -14,16 +14,16 @@ Quick Start
 
 ```Javascript
 
-    var Proxy = require('browsermode-proxy').Proxy;
-        , proxy = new Proxy();
+var Proxy = require('browsermode-proxy').Proxy;
+    , proxy = new Proxy();
 
-    proxy.doHAR('http://yahoo.com', function(err, data) {
-        if (err) {
-            console.error('ERROR: ' + err);
-        } else {
-            fs.writeFileSync('yahoo.com.har', data, 'utf8');
-        }
-    });
+proxy.doHAR('http://yahoo.com', function(err, data) {
+    if (err) {
+        console.error('ERROR: ' + err);
+    } else {
+        fs.writeFileSync('yahoo.com.har', data, 'utf8');
+    }
+});
 ```
 
 Details
