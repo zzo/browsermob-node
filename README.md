@@ -29,7 +29,7 @@ proxy.doHAR('http://yahoo.com', function(err, data) {
 Details
 -------
 
-You need to install and start the [browsermob-proxy](https://github.com/webmetrics/browsermob-proxy) available above:
+You need to install and start the [browsermob-proxy](https://github.com/webmetrics/browsermob-proxy):
 
     % /bin/sh bin/browsermob-proxy
 
@@ -64,20 +64,17 @@ Somewhere else?:
 proxy = new Proxy({ host: 'some.other.host', port: <some other port> });
 ```
 
-If you're using Selenium you need to tell the Proxy() constructor where Selenium is running (ONLY IF YOU ARE USING THE 'doHAR'
-convenience method) - the defaults are 'localhost' and port 4444.  Somewhere else?:
-
-```Javascript
-
-proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> });
-```
-
 Convenience API
 ----------------
 
 **doHAR(URL, CALLBACK)**
 
-    Conveience method to get HAR data in one-shot - expects Selenium to be running somewhere - if not running on 'localhost' port 4444 you need to tell it otherwise via the Proxy constructor as outline above.
+    Generate HAR data in one-shot - expects Selenium to be running somewhere - if not running on 'localhost' port 4444 you need to tell it otherwise via the Proxy constructor 'selHost' and 'selPort':
+
+```Javascript
+
+proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> });
+```
 
     PARAMETERS:
 
@@ -86,7 +83,22 @@ Convenience API
             1. ERROR string if there was an error 
             2. HAR string data
 
-    EXAMPLE: See above
+EXAMPLE:
+
+```Javascript
+
+var Proxy = require('browsermode-proxy').Proxy;
+    , proxy = new Proxy();
+
+proxy.doHAR('http://yahoo.com', function(err, data) {
+    if (err) {
+        console.error('ERROR: ' + err);
+    } else {
+        fs.writeFileSync('yahoo.com.har', data, 'utf8');
+    }
+});
+```
+
 
 **cbHAR(NAME, GENERATE_TRAFFIC_CALLBACK, HAR_CALLBACK)**
 
@@ -106,7 +118,7 @@ Convenience API
             1. ERROR string if there was an error 
             2. HAR string data
 
-    EXAMPLE:
+EXAMPLE:
 
 ```Javascript
 
