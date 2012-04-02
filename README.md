@@ -69,19 +69,19 @@ Convenience API
 
 **doHAR(URL, CALLBACK)**
 
-    Generate HAR data in one-shot - expects Selenium to be running somewhere - if not running on 'localhost' port 4444 you need to tell it otherwise via the Proxy constructor 'selHost' and 'selPort':
+Generate HAR data in one-shot - expects Selenium to be running somewhere - if not running on 'localhost' port 4444 you need to tell it otherwise via the Proxy constructor 'selHost' and 'selPort':
 
 ```Javascript
 
-proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> });
+proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> }); // If not at localhost:4444
 ```
 
-    PARAMETERS:
+PARAMETERS
 
-        * URL URL is page to get HAR data for
-        * CALLBACK(ERROR) function
-            1. ERROR string if there was an error 
-            2. HAR string data
+    * URL URL is page to get HAR data for
+    * CALLBACK(ERROR) function
+        1. ERROR string if there was an error 
+        2. HAR string data
 
 EXAMPLE:
 
@@ -102,23 +102,23 @@ proxy.doHAR('http://yahoo.com', function(err, data) {
 
 **cbHAR(NAME, GENERATE_TRAFFIC_CALLBACK, HAR_CALLBACK)**
 
-    Convenience method to get HAR data - this method allows you to generate whatever traffic you like (via the CALLBACK), and then generate the HAR file.  
+Convenience method to get HAR data - this method allows you to generate whatever traffic you like (via the CALLBACK), and then generate the HAR file.  
 
-    PARAMETERS:
+PARAMETERS
 
-        * NAME is an abritrary name for this run - like 'yahoo.com' or whatever you like.
-        * GENERATE_TRAFFIC_CALLBACK(PROXY, DONE_CALLBACK)
+    * NAME is an abritrary name for this run - like 'yahoo.com' or whatever you like.
+    * GENERATE_TRAFFIC_CALLBACK(PROXY, DONE_CALLBACK)
 
-            PARAMETERS: 
+        PARAMETERS
 
-                * PROXY is the proxy you must use which is a string of the form '<hostname>:<port>'.  All traffic you generate that you want to be part of the HAR must use this proxy!  That is the whole point of this thing.
-                * DONE_CALLBACK is the function you call when you are done generating traffic and are ready to generate the HAR file.
+            * PROXY is the proxy you must use which is a string of the form '<hostname>:<port>'.  All traffic you generate that you want to be part of the HAR must use this proxy!  That is the whole point of this thing.
+            * DONE_CALLBACK is the function you call when you are done generating traffic and are ready to generate the HAR file.
 
-        * HAR_CALLBACK(ERROR, HAR) function 
-            1. ERROR string if there was an error 
-            2. HAR string data
+    * HAR_CALLBACK(ERROR, HAR) function 
+        1. ERROR string if there was an error 
+        2. HAR string data
 
-EXAMPLE:
+EXAMPLE
 
 ```Javascript
 
