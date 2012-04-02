@@ -33,7 +33,7 @@ You need to install and start the [browsermob-proxy](https://github.com/webmetri
 
     % /bin/sh bin/browsermob-proxy
 
-You also need to use either Selenium OR PhantomJS (and optionally) CasperJS
+You also need to use either Selenium OR CasperJS
 
 Selenium
 --------
