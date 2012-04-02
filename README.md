@@ -12,7 +12,7 @@ OK - now you're on the right track!
 Quick Start
 -----------
 
-```Javascript
+```javascript
 
 var Proxy = require('browsermode-proxy').Proxy;
     , proxy = new Proxy();
@@ -52,14 +52,14 @@ Configure the Proxy Object
 
 You need to tell the Proxy() constructor where browsermob-proxy is running.  The defaults are running on 'localhost' port 8080:
 
-```Javascript
+```javascript
 
 proxy = new Proxy();
 ```
 
 Somewhere else?:
 
-```Javascript
+```javascript
 
 proxy = new Proxy({ host: 'some.other.host', port: <some other port> });
 ```
@@ -71,7 +71,7 @@ Convenience API
 
 Generate HAR data in one-shot - expects Selenium to be running somewhere - if not running on 'localhost' port 4444 you need to tell it otherwise via the Proxy constructor 'selHost' and 'selPort':
 
-```Javascript
+```javascript
 
 proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> }); // If not at localhost:4444
 ```
@@ -79,13 +79,13 @@ proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> }); /
 PARAMETERS
 
     * URL URL is page to get HAR data for
-    * CALLBACK(ERROR) function
+    * CALLBACK(ERROR, HAR) function
         1. ERROR string if there was an error 
         2. HAR string data
 
 EXAMPLE:
 
-```Javascript
+```javascript
 
 var Proxy = require('browsermode-proxy').Proxy;
     , proxy = new Proxy();
@@ -98,7 +98,6 @@ proxy.doHAR('http://yahoo.com', function(err, data) {
     }
 });
 ```
-
 
 **cbHAR(NAME, GENERATE_TRAFFIC_CALLBACK, HAR_CALLBACK)**
 
@@ -120,7 +119,7 @@ PARAMETERS
 
 EXAMPLE
 
-```Javascript
+```javascript
 
 var Proxy = require('browsermob-proxy').Proxy
     , webdriverjs = require("webdriverjs")
@@ -152,37 +151,19 @@ function doSeleniumStuff(proxy, cb) {
 }
 ```
 
-Note you MUST use 'firefox' or 'ie' browser and note how I must set the Selenium proxy to go thru browsermob-proxy.  I have both Selenium server standalone and browsermob-proxy running on localhost on their default ports (4444 and 8080 respectively).
+Note you MUST use 'firefox' or 'ie' browser and note how I set the Selenium proxy to go thru browsermob-proxy.  I have both Selenium server standalone and browsermob-proxy running on localhost on their default ports (4444 and 8080 respectively).
 
-Here is an exaple using PhantomJS/CasperJS - no Selenium required! - you pass the path to a CasperJS script and all of its interactions will be captured: 
+Here is an exaple using CasperJS - no Selenium required! - you pass the path to a CasperJS script and all of its interactions will be captured:
 
-```Javascript
+    % bin/runCasper.js casperScript.js
 
-var Proxy = require('browsermob-proxy').Proxy
-    , spawn = require('child_process').spawn
-    , fs = require('fs')
-    , proxy = new Proxy()
-;
+The 'runCasper.js' script is part of this package.
 
-proxy.cbHAR('search.yahoo.com', doCasperJSStuff, function(err, data) {
-        if (err) {
-            console.error('ERR: ' + err);
-        } else {
-            fs.writeFileSync('search.yahoo.com.har', data, 'utf8');
-        }   
-});
+Here is a sample CasperJS script:
 
-function doCasperJSStuff(proxy, cb) {
-    casperjs = spawn('bin/casperjs', [ '--proxy=' + proxy, process.argv[2] ] );
-    casperjs.on('exit', cb);
-}
-```
+```javascript
 
-And here is a CasperJS script:
-
-```Javascript
-
-var casper = require('casper').create();                                                                                                                                  
+var casper = require('casper').create();
 
 casper.start('http://search.yahoo.com/', function() {
     this.fill('form#sf', { "p": 'javascript' }, false);
@@ -194,18 +175,18 @@ casper.run(function() {
 });
 ```
 
-Putting it all together:
+Here is it put all together:
 
-    % node runCasper.js searchYahooCasper.js
+    % node bin/runCasper.js searchYahooCasper.js
 
-What is interesting here is you can spawn off ANY process that generates web traffic thru the supplied proxy to generate the HAR - so run wild!
+This will dump a HAR file named: 'searchYahooCasper.js.har' in the current directory.
 
 Bandwidth Limits
 ----------------
 
 In the Proxy constructor you can specify bandwidth and latency limitations like so:
 
-```Javascript
+```javascript
 var proxy = new Proxy( { downloadKbps => 56, uploadKbps => 56, latency 200 } );
 ```
 
@@ -216,7 +197,7 @@ Gory Details
 
 You can control the browsermob-proxy directly if you want even finer-grained control using methods mapped directly to its REST interface.  Here is an example:
 
-```Javascript
+```javascript
 
 var webdriverjs = require("webdriverjs")
     , Proxy = require('browsermob-proxy').Proxy
