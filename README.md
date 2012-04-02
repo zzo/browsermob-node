@@ -1,4 +1,4 @@
-NodeJS bindings for broswermob-proxy programmable proxy to programmatically generate HAR files
+NodeJS bindings for broswermob-proxy to programmatically generate HAR files
 ===========================
 
 1. First see [browsermob-proxy](https://github.com/webmetrics/browsermob-proxy)
@@ -31,7 +31,7 @@ Details
 
 You need to install and start the [browsermob-proxy](https://github.com/webmetrics/browsermob-proxy) available above:
 
-    % /bin/sh bin/browsermob-proxy &
+    % /bin/sh bin/browsermob-proxy
 
 You also need to use either Selenium OR PhantomJS (and optionally) CasperJS
 
@@ -52,22 +52,25 @@ Configure the Proxy Object
 
 You need to tell the Proxy() constructor where browsermob-proxy is running.  The defaults are running on 'localhost' port 8080:
 
-Javascript:
+```Javascript
 
-    proxy = new Proxy();
+proxy = new Proxy();
+```
 
 Somewhere else?:
 
-Javascript:
+```Javascript
 
-    proxy = new Proxy({ host: 'some.other.host', port: <some other port> });
+proxy = new Proxy({ host: 'some.other.host', port: <some other port> });
+```
 
 If you're using Selenium you need to tell the Proxy() constructor where Selenium is running (ONLY IF YOU ARE USING THE 'doHAR'
 convenience method) - the defaults are 'localhost' and port 4444.  Somewhere else?:
 
-Javascript:
+```Javascript
 
-    proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> });
+proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> });
+```
 
 Convenience API
 ----------------
@@ -105,76 +108,79 @@ Convenience API
 
     EXAMPLE:
 
-Javascript:
+```Javascript
 
-    var Proxy = require('browsermob-proxy').Proxy
-        , webdriverjs = require("webdriverjs")
-        , fs = require('fs')
-        , proxy = new Proxy()
-    ;
+var Proxy = require('browsermob-proxy').Proxy
+    , webdriverjs = require("webdriverjs")
+    , fs = require('fs')
+    , proxy = new Proxy()
+;
 
-    proxy.cbHAR('search.yahoo.com', doSeleniumStuff, function(err, data) {
-            if (err) {
-                console.error('ERR: ' + err);
-            } else {
-                fs.writeFileSync('stuff.har', data, 'utf8');
-            }
+proxy.cbHAR('search.yahoo.com', doSeleniumStuff, function(err, data) {
+        if (err) {
+            console.error('ERR: ' + err);
+        } else {
+            fs.writeFileSync('stuff.har', data, 'utf8');
+        }
+});
+
+function doSeleniumStuff(proxy, cb) {
+    var browser = webdriverjs.remote({
+        host: 'localhost'
+        , port: 4444
+        , desiredCapabilities: { browserName: 'firefox', seleniumProtocol: 'WebDriver', proxy: { httpProxy: proxy } }
     });
 
-    function doSeleniumStuff(proxy, cb) {
-        var browser = webdriverjs.remote({
-            host: 'localhost'
-            , port: 4444
-            , desiredCapabilities: { browserName: 'firefox', seleniumProtocol: 'WebDriver', proxy: { httpProxy: proxy } }
-        });
-
-        browser
-            .init()
-            .url("http://search.yahoo.com")
-            .setValue("#yschsp", "javascript")
-            .submitForm("#sf")
-            .end(cb);
-    }
+    browser
+        .init()
+        .url("http://search.yahoo.com")
+        .setValue("#yschsp", "javascript")
+        .submitForm("#sf")
+        .end(cb);
+}
+```
 
 Note you MUST use 'firefox' or 'ie' browser and note how I must set the Selenium proxy to go thru browsermob-proxy.  I have both Selenium server standalone and browsermob-proxy running on localhost on their default ports (4444 and 8080 respectively).
 
 Here is an exaple using PhantomJS/CasperJS - no Selenium required! - you pass the path to a CasperJS script and all of its interactions will be captured: 
 
-Javascript: 
+```Javascript
 
-    var Proxy = require('browsermob-proxy').Proxy
-        , spawn = require('child_process').spawn
-        , fs = require('fs')
-        , proxy = new Proxy()
-    ;
+var Proxy = require('browsermob-proxy').Proxy
+    , spawn = require('child_process').spawn
+    , fs = require('fs')
+    , proxy = new Proxy()
+;
 
-    proxy.cbHAR('search.yahoo.com', doCasperJSStuff, function(err, data) {
-            if (err) {
-                console.error('ERR: ' + err);
-            } else {
-                fs.writeFileSync('search.yahoo.com.har', data, 'utf8');
-            }   
-    });
+proxy.cbHAR('search.yahoo.com', doCasperJSStuff, function(err, data) {
+        if (err) {
+            console.error('ERR: ' + err);
+        } else {
+            fs.writeFileSync('search.yahoo.com.har', data, 'utf8');
+        }   
+});
 
-    function doCasperJSStuff(proxy, cb) {
-        casperjs = spawn('bin/casperjs', [ '--proxy=' + proxy, process.argv[2] ] );
-        casperjs.on('exit', cb);
-    }
+function doCasperJSStuff(proxy, cb) {
+    casperjs = spawn('bin/casperjs', [ '--proxy=' + proxy, process.argv[2] ] );
+    casperjs.on('exit', cb);
+}
+```
 
 And here is a CasperJS script:
 
-Javascript:
+```Javascript
 
-    var casper = require('casper').create();                                                                                                                                  
+var casper = require('casper').create();                                                                                                                                  
 
-    casper.start('http://search.yahoo.com/', function() {
-        this.fill('form#sf', { "p": 'javascript' }, false);
-        this.click('#yschbt');
-    });
+casper.start('http://search.yahoo.com/', function() {
+    this.fill('form#sf', { "p": 'javascript' }, false);
+    this.click('#yschbt');
+});
 
-    casper.run(function() {
-        this.exit();
-    });
+casper.run(function() {
+    this.exit();
+});
+```
 
 Putting it all together:
 
@@ -187,7 +193,9 @@ Bandwidth Limits
 
 In the Proxy constructor you can specify bandwidth and latency limitations like so:
 
-    var proxy = new Proxy( { downloadKbps => 56, uploadKbps => 56, latency 200 } );
+```Javascript
+var proxy = new Proxy( { downloadKbps => 56, uploadKbps => 56, latency 200 } );
+```
 
 Would tell the proxy to act like a 56K modem with 200ms latency.
 
@@ -196,59 +204,60 @@ Gory Details
 
 You can control the browsermob-proxy directly if you want even finer-grained control using methods mapped directly to its REST interface.  Here is an example:
 
-Javascript:
+```Javascript
 
-    var webdriverjs = require("webdriverjs")
-        , Proxy = require('browsermob-proxy').Proxy
-        , fs = require('fs')
-        , proxyHost = 'localhost'
-        ;
+var webdriverjs = require("webdriverjs")
+    , Proxy = require('browsermob-proxy').Proxy
+    , fs = require('fs')
+    , proxyHost = 'localhost'
+    ;
 
-        var proxy = new Proxy( { host: proxyHost });
-        proxy.start(function(err, data) {
-            if (!err) {
-                proxy.startHAR(data.port, 'http://search.yahoo.com', function(err, resp) {
-                    if (!err) {
-                        // DO WHATEVER WEB INTERFACTION YOU WANT USING THE PROXY
-                        doSeleniumStuff(proxyHost + ':' +  data.port, function () {
-                            proxy.getHAR(data.port, function(err, resp) {
-                                if (!err) {
-                                console.log(resp);
-                                    fs.writeFileSync('output.har', resp, 'utf8');                            
-                                } else {
-                                    console.err('Error getting HAR file: ' + err);
-                                }
-                                proxy.stop(data.port, function() {});
-                            });
+    var proxy = new Proxy( { host: proxyHost });
+    proxy.start(function(err, data) {
+        if (!err) {
+            proxy.startHAR(data.port, 'http://search.yahoo.com', function(err, resp) {
+                if (!err) {
+                    // DO WHATEVER WEB INTERFACTION YOU WANT USING THE PROXY
+                    doSeleniumStuff(proxyHost + ':' +  data.port, function () {
+                        proxy.getHAR(data.port, function(err, resp) {
+                            if (!err) {
+                            console.log(resp);
+                                fs.writeFileSync('output.har', resp, 'utf8');                            
+                            } else {
+                                console.err('Error getting HAR file: ' + err);
+                            }
+                            proxy.stop(data.port, function() {});
                         });
-                    } else {
-                        console.error('Error starting HAR: ' + err);
-                        proxy.stop(data.port,function() {});
-                    }
-                });
-            } else {
-                console.error('Error starting proxy: ' + err);
-            }
-         });
+                    });
+                } else {
+                    console.error('Error starting HAR: ' + err);
+                    proxy.stop(data.port,function() {});
+                }
+            });
+        } else {
+            console.error('Error starting proxy: ' + err);
+        }
+     });
 
 
-    function doSeleniumStuff(proxy, cb) {
-        var browser = webdriverjs.remote({
-            host: 'localhost'
-            , port: 4444
-            , desiredCapabilities: { browserName: 'chrome', seleniumProtocol: 'WebDriver', proxy: { httpProxy: proxy, proxyType: 'DIRECT'  } }
-        });
+function doSeleniumStuff(proxy, cb) {
+    var browser = webdriverjs.remote({
+        host: 'localhost'
+        , port: 4444
+        , desiredCapabilities: { browserName: 'chrome', seleniumProtocol: 'WebDriver', proxy: { httpProxy: proxy, proxyType: 'DIRECT'  } }
+    });
 
-        browser
-            .testMode()
-            .init()
-            .url("http://search.yahoo.com")
-            .setValue("#yschsp", "javascript")
-            .submitForm("#sf")
-            .tests.visible('#resultCount', true, 'Got result count')
-            .saveScreenshot('results.png')
-            .end(cb);
-    }
+    browser
+        .testMode()
+        .init()
+        .url("http://search.yahoo.com")
+        .setValue("#yschsp", "javascript")
+        .submitForm("#sf")
+        .tests.visible('#resultCount', true, 'Got result count')
+        .saveScreenshot('results.png')
+        .end(cb);
+}
+```
 
 In this example I am manually controlling the browsermob-proxy - the convenenice methods 'doHAR' and 'cbHAR' do most of this stuff for you so use them!
 
