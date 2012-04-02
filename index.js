@@ -1,6 +1,10 @@
+/**
+ * Copyright (c) 2012 ZZO Associates
+ */
+
 var http = require('http')
     , webdriverjs = require("webdriverjs")
-    ;
+;
 
 function Proxy(conf) {
     this.host = (conf && conf.host) || 'localhost';
@@ -33,7 +37,7 @@ Proxy.prototype = {
             .end(cb);
     },
 
-    selHAR:  function(name, selCB, cb) {
+    cbHAR:  function(name, selCB, cb) {
         var _this = this;
         this.start(function(err, data) {
             if (!err) {
