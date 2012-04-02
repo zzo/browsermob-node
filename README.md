@@ -153,7 +153,10 @@ function doSeleniumStuff(proxy, cb) {
 
 Note you MUST use 'firefox' or 'ie' browser and note how I set the Selenium proxy to go thru browsermob-proxy.  I have both Selenium server standalone and browsermob-proxy running on localhost on their default ports (4444 and 8080 respectively).
 
-Here is an exaple using CasperJS - no Selenium required! - you pass the path to a CasperJS script and all of its interactions will be captured:
+CasperJS
+--------
+
+Here is an exaple using CasperJS - no Selenium required! - you pass the path to a CasperJS script to the provided 'bin/runCasper.js' script and all of its interactions will be captured:
 
     % bin/runCasper.js casperScript.js
 
@@ -237,7 +240,7 @@ function doSeleniumStuff(proxy, cb) {
     var browser = webdriverjs.remote({
         host: 'localhost'
         , port: 4444
-        , desiredCapabilities: { browserName: 'chrome', seleniumProtocol: 'WebDriver', proxy: { httpProxy: proxy, proxyType: 'DIRECT'  } }
+        , desiredCapabilities: { browserName: 'chrome', seleniumProtocol: 'WebDriver', proxy: { httpProxy: proxy } }
     });
 
     browser
