@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/zzo/browsermob-node.png)](http://travis-ci.org/zzo/browsermob-node)
 NodeJS bindings for broswermob-proxy to programmatically generate HAR files
 ===========================
 
