@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 ZZO Associates
+ * Copyright (c) 2013 ZZO Associates
  */
 
 var http = require('http')
@@ -126,7 +126,7 @@ Proxy.prototype = {
     },
 
     newPage: function(port, name, cb) {
-        this.doReq('PUT', '/proxy/' + port + '/har', 'pageRef=' + name, cb);
+        this.doReq('PUT', '/proxy/' + port + '/har/pageRef', 'pageRef=' + name, cb);
     },
 
     /*
