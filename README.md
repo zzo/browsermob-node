@@ -13,9 +13,9 @@ Quick Start
 -----------
 
 ```javascript
-
-var Proxy = require('browsermode-proxy').Proxy;
-    , proxy = new Proxy();
+var Proxy = require('browsermob-proxy').Proxy
+  , proxy = new Proxy()
+  , fs = require('fs');
 
 proxy.doHAR('http://yahoo.com', function(err, data) {
     if (err) {
