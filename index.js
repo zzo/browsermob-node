@@ -9,6 +9,7 @@ var http = require('http')
 function Proxy(conf) {
     this.host = (conf && conf.host) || 'localhost';
     this.port = (conf && conf.port) || 8080;
+    this.proxyPort = (conf && conf.proxyPort) || null;
     this.selHost = (conf && conf.selHost) || 'localhost';
     this.selPort = (conf && conf.selPort) || 4444;
 
@@ -39,7 +40,7 @@ Proxy.prototype = {
 
     cbHAR:  function(name, selCB, cb) {
         var _this = this;
-        this.start(function(err, data) {
+        this.start(_this.proxyPort, function(err, data) {
             if (!err) {
                 _this.startHAR(data.port, name, function(err, resp) {
                     if (!err) {
@@ -144,7 +145,7 @@ Proxy.prototype = {
 
     doHAR: function(url, cb) {
         var _this = this;
-        this.start(function(err, data) {
+        this.start(_this.proxyPort, function(err, data) {
             if (!err) {
                 _this.startHAR(data.port, url, function(err, resp) {
                     if (!err) {
