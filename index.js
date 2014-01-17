@@ -180,6 +180,9 @@ Proxy.prototype = {
             , port: this.port
             , method: method
             , path: url
+            , headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
         }
         , req = http.request(options, function(res) {
             var data = '';
