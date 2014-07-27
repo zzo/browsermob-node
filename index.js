@@ -76,7 +76,11 @@ Proxy.prototype = {
         this.doReq('POST', '/proxy', postData, function(err, data) {
             var obj;
             if (!err) {
-                obj = JSON.parse(data);
+                try {
+                    obj = JSON.parse(data);
+                } catch(e) {
+                    return cb('browsermob-proxy returned error');
+                }
                 cb(null, obj);
             } else {
                 cb(err);
