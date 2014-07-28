@@ -76,7 +76,11 @@ Proxy.prototype = {
         this.doReq('POST', '/proxy', postData, function(err, data) {
             var obj;
             if (!err) {
-                obj = JSON.parse(data);
+                try {
+                    obj = JSON.parse(data);
+                } catch(e) {
+                    return cb('browsermob-proxy returned error');
+                }
                 cb(null, obj);
             } else {
                 cb(err);
@@ -92,16 +96,26 @@ Proxy.prototype = {
         this.doReq('GET', '/proxy/' + port + '/har', cb);
     },
 
-    startHAR: function(port, name, cb) {
+    startHAR: function(port, name, captureHeaders, captureContent, captureBinaryContent, cb) {
         var _this = this
         ;
 
-        if (!cb) {
-            cb = name;
+        cb = cb || arguments[arguments.length - 1];
+        if (typeof name !== 'string')
             name = 'Page 1';
+
+        var postData = 'initialPageRef=' + name;
+        if (typeof captureHeaders === 'boolean') {
+            postData += '&captureHeaders=' + captureHeaders.toString();
+        }
+        if (typeof captureContent === 'boolean') {
+            postData += '&captureContent=' + captureContent.toString();
+        }
+        if (typeof captureBinaryContent === 'boolean') {
+            postData += '&captureBinaryContent=' + captureBinaryContent.toString();
         }
 
-        this.doReq('PUT', '/proxy/' + port + '/har', 'initialPageRef=' + name, 
+        this.doReq('PUT', '/proxy/' + port + '/har', postData,
             // Check if we need to add in limits
             function(err, data) {
                 var limit = false, limitObj = {};
