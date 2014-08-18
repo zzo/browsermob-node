@@ -3,7 +3,7 @@
  */
 
 var http = require('http')
-    , webdriverjs = require("webdriverjs")
+    , webdriverio = require("webdriverio")
 ;
 
 function Proxy(conf) {
@@ -25,7 +25,7 @@ function Proxy(conf) {
 
 Proxy.prototype = {
     selFunc:  function(proxy, url, cb) {
-        var browser = webdriverjs.remote({
+        var browser = webdriverio.remote({
             host: this.selHost
             , port: this.selPort
             , desiredCapabilities: { browserName: 'firefox', seleniumProtocol: 'WebDriver', proxy: { httpProxy: proxy } }
@@ -214,7 +214,7 @@ Proxy.prototype = {
 
         if (typeof(postData) === 'string') {
             req.write(postData);
-        } 
+        }
         req.end();
     }
 };
