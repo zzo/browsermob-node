@@ -12,7 +12,7 @@
   "main": "./browsermob.js",
   "dependencies" :
     {
-      "webdriverjs" : ""
+      "webdriverio" : ""
   }
 }
 
