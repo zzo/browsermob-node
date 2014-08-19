@@ -37,11 +37,14 @@ Proxy.prototype = {
             .end(cb);
     },
 
-    cbHAR:  function(name, selCB, cb) {
+    cbHAR:  function(options, selCB, cb) {
         var _this = this;
+        if (typeof options === "string") {
+            options = { name: options};
+        }
         this.start(function(err, data) {
             if (!err) {
-                _this.startHAR(data.port, name, function(err, resp) {
+                _this.startHAR(data.port, options.name, options.captureHeaders, options.captureContent, options.captureBinaryContent, function(err, resp) {
                     if (!err) {
                         selCB(_this.host + ':' + data.port, function () {
                             _this.getHAR(data.port, function(err, resp) {
