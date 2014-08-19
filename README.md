@@ -280,7 +280,7 @@ Full API
             1. ERROR string if there was an error 
             2. DATA object whose only memeber is 'port' - the port the proxy is listening on
 
-**startHAR(PORT, [ NAME ], CALLBACK)**
+**startHAR(PORT, [ NAME, CAPTUREHEADERS, CAPTURECONTENT, CAPTUREBINARYCONTENT ], CALLBACK)**
 
     Instructs the proxy listening on the given port to start generating the HAR - after this call all traffic thru this proxy will become part of the HAR
 
@@ -288,6 +288,9 @@ Full API
 
         * PORT of proxy for this command
         * Optional NAME for this HAR
+        * Optional boolean CAPTUREHEADERS to record HTTP headers
+        * Optional boolean CAPTURECONTENT to record content of the requests
+        * Optional boolean CAPTUREBINARYCONTENT to record binary content
         * CALLBACK(ERROR) function
             1. ERROR string if there was an error 
 
