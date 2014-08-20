@@ -99,13 +99,13 @@ proxy.doHAR('http://yahoo.com', function(err, data) {
 });
 ```
 
-**cbHAR(NAME, GENERATE_TRAFFIC_CALLBACK, HAR_CALLBACK)**
+**cbHAR(OPTIONS, GENERATE_TRAFFIC_CALLBACK, HAR_CALLBACK)**
 
 Convenience method to get HAR data - this method allows you to generate whatever traffic you like (via the CALLBACK), and then generate the HAR file.  
 
 PARAMETERS
 
-    * NAME is an abritrary name for this run - like 'yahoo.com' or whatever you like.
+    * OPTIONS is an object with keys 'name', 'captureHeaders', 'captureContent' and 'captureBinaryContent'; 'name' is an abritrary name for this run - like 'yahoo.com' or whatever you like; 'captureHeaders', 'captureContent' and 'captureBinaryContent' expect booleans indicating whether to capture resp headers, body of http transactions, and binary body of transactions. For backwards compatibility reasons, if OPTIONS is a string, it will be interpreted as the name for the run.
     * GENERATE_TRAFFIC_CALLBACK(PROXY, DONE_CALLBACK)
 
         PARAMETERS
@@ -280,7 +280,7 @@ Full API
             1. ERROR string if there was an error 
             2. DATA object whose only memeber is 'port' - the port the proxy is listening on
 
-**startHAR(PORT, [ NAME ], CALLBACK)**
+**startHAR(PORT, [ NAME, CAPTUREHEADERS, CAPTURECONTENT, CAPTUREBINARYCONTENT ], CALLBACK)**
 
     Instructs the proxy listening on the given port to start generating the HAR - after this call all traffic thru this proxy will become part of the HAR
 
@@ -288,6 +288,9 @@ Full API
 
         * PORT of proxy for this command
         * Optional NAME for this HAR
+        * Optional boolean CAPTUREHEADERS to record HTTP headers
+        * Optional boolean CAPTURECONTENT to record content of the requests
+        * Optional boolean CAPTUREBINARYCONTENT to record binary content
         * CALLBACK(ERROR) function
             1. ERROR string if there was an error 
 
