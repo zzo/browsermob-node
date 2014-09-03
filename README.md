@@ -210,30 +210,45 @@ var webdriverjs = require("webdriverjs")
 
     var proxy = new Proxy( { host: proxyHost });
     proxy.start(function(err, data) {
-        if (!err) {
-            proxy.startHAR(data.port, 'http://search.yahoo.com', function(err, resp) {
                 if (!err) {
-                    // DO WHATEVER WEB INTERFACTION YOU WANT USING THE PROXY
-                    doSeleniumStuff(proxyHost + ':' +  data.port, function () {
-                        proxy.getHAR(data.port, function(err, resp) {
-                            if (!err) {
-                            console.log(resp);
-                                fs.writeFileSync('output.har', resp, 'utf8');                            
-                            } else {
-                                console.err('Error getting HAR file: ' + err);
-                            }
-                            proxy.stop(data.port, function() {});
-                        });
+                    // SET AND OVERRIDE HTTP REQUEST HEADERS IF YOU WANT TO
+                    var headersToSet = {
+                        'User-Agent': 'Bananabot/1.0',
+                        'custom-header1': 'custom-header1-value',
+                        'custom-header2': 'custom-header2-value'
+                    }
+                    proxy.addHeader(data.port, headersToSet, function (err,resp) {
+                        if(!err) {
+                            proxy.startHAR(data.port, 'http://localhost:8004', function (err, resp) {
+                                if (!err) {
+                                    // DO WHATEVER WEB INTERFACTION YOU WANT USING THE PROXY
+                                    doSeleniumStuff(proxyHost + ':' +  data.port, function () {
+                                        proxy.getHAR(data.port, function(err, resp) {
+                                            if (!err) {
+                                                console.log(resp);
+                                                fs.writeFileSync('output.har', resp, 'utf8');
+                                            } else {
+                                                console.err('Error getting HAR file: ' + err);
+                                            }
+                                            proxy.stop(data.port, function() {});
+                                        });
+                                    });
+                                } else {
+                                    console.error('Error starting HAR: ' + err);
+                                    proxy.stop(data.port, function () {
+                                    });
+                                }
+                            });
+                        } else {
+                             console.error('Error setting the custom headers');
+                             proxy.stop(data.port, function () {
+                           });
+                        }
                     });
                 } else {
-                    console.error('Error starting HAR: ' + err);
-                    proxy.stop(data.port,function() {});
+                    console.error('Error starting proxy: ' + err);
                 }
             });
-        } else {
-            console.error('Error starting proxy: ' + err);
-        }
-     });
 
 
 function doSeleniumStuff(proxy, cb) {
@@ -338,3 +353,14 @@ Full API
         * CALLBACK(ERROR) function
             1. ERROR string if there was an error 
 
+**addHeader(PORT, HEADERSTOSET, CALLBACK)**
+    
+    Set and override HTTP Request headers
+    
+     PARAMETERS:
+    
+            * PORT of proxy for this command
+            * Headers to set
+            * CALLBACK(ERROR) function
+                1. ERROR string if there was an error
+                
