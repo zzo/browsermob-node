@@ -185,33 +185,41 @@ Proxy.prototype = {
             }
          });
     },
+    addHeader: function (port, headersToAdd, cb) {
+        var postData = JSON.stringify(headersToAdd);
+        var options = {
+            host: this.host, port: this.port, method: 'POST', path: '/proxy/' + port + '/headers', headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        this.doReqWithOptions(options, postData, cb);
+    },
 
-    doReq: function(method, url, postData, cb) {
+    doReq: function (method, url, postData, cb) {
+        var options = {
+            host: this.host, port: this.port, method: method, path: url, headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        };
+        this.doReqWithOptions(options, postData, cb);
+
+    },
+    doReqWithOptions: function (options, postData, cb) {
 
         if (!cb) { // for empty requests
             cb = postData;
         }
-
-        var options = {
-            host: this.host
-            , port: this.port
-            , method: method
-            , path: url
-            , headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }
-        , req = http.request(options, function(res) {
-            var data = '';
-            res.setEncoding('utf8');
-            res.on('data', function (chunk) {
-                data += chunk;
-            });
-            res.on('end', function() {
-                cb(null, data);
-            });
-        })
-        ;
+        var req = http.request(options, function (res) {
+                var data = '';
+                res.setEncoding('utf8');
+                res.on('data', function (chunk) {
+                    data += chunk;
+                });
+                res.on('end', function () {
+                    cb(null, data);
+                });
+            })
+            ;
 
         req.on('error', cb);
 
