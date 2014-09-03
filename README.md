@@ -211,6 +211,12 @@ var webdriverjs = require("webdriverjs")
     var proxy = new Proxy( { host: proxyHost });
     proxy.start(function(err, data) {
         if (!err) {
+            var headersToSet = {
+                           'User-Agent': 'Bananabot/1.0'
+                           'custom-header1':'custom-header1-value',
+                           'custom-header2':'custom-header2-value'
+            }
+            proxy.addHeader(that.port,headersToSet,function(){});
             proxy.startHAR(data.port, 'http://search.yahoo.com', function(err, resp) {
                 if (!err) {
                     // DO WHATEVER WEB INTERFACTION YOU WANT USING THE PROXY
@@ -338,3 +344,14 @@ Full API
         * CALLBACK(ERROR) function
             1. ERROR string if there was an error 
 
+**addHeader(PORT, HEADERSTOSET, CALLBACK)**
+    
+    Set and override HTTP Request headers
+    
+     PARAMETERS:
+    
+            * PORT of proxy for this command
+            * Headers to set
+            * CALLBACK(ERROR) function
+                1. ERROR string if there was an error
+                
