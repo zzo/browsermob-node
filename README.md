@@ -363,4 +363,15 @@ Full API
             * Headers to set
             * CALLBACK(ERROR) function
                 1. ERROR string if there was an error
-                
+
+**remapHosts(PORT, '{"example.com": "1.2.3.4"}', CALLBACK)**
+
+    Overrides normal DNS lookups and remaps the given hosts with the associated IP address
+    Payload data should be json encoded set of name/value pairs (ex: {"example.com": "1.2.3.4"})
+
+     PARAMETERS:
+
+            * PORT of proxy for this command
+            * Hosts to remap
+            * CALLBACK(ERROR) function
+                1. ERROR string if there was an error

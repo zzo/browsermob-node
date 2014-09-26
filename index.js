@@ -227,6 +227,10 @@ Proxy.prototype = {
             req.write(postData);
         }
         req.end();
+    },
+
+    remapHosts: function (port, postData, cb) {
+        this.doReq('POST', '/proxy/' + port + '/hosts', postData, cb)
     }
 };
 
