@@ -195,6 +195,16 @@ Proxy.prototype = {
         this.doReqWithOptions(options, postData, cb);
     },
 
+    remapHosts: function (port, hostsToAdd, cb) {
+        var postData = JSON.stringify(hostsToAdd);
+        var options = {
+            host: this.host, port: this.port, method: 'POST', path: '/proxy/' + port + '/hosts', headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        this.doReqWithOptions(options, postData, cb);
+    },
+
     doReq: function (method, url, postData, cb) {
         var options = {
             host: this.host, port: this.port, method: method, path: url, headers: {
@@ -227,11 +237,8 @@ Proxy.prototype = {
             req.write(postData);
         }
         req.end();
-    },
-
-    remapHosts: function (port, postData, cb) {
-        this.doReq('POST', '/proxy/' + port + '/hosts', postData, cb)
     }
+
 };
 
 module.exports = {
