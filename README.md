@@ -156,7 +156,7 @@ Note you MUST use 'firefox' or 'ie' browser and note how I set the Selenium prox
 CasperJS
 --------
 
-Here is an exaple using CasperJS - no Selenium required! - you pass the path to a CasperJS script to the provided 'bin/runCasper.js' script and all of its interactions will be captured:
+Here is an example using CasperJS - no Selenium required! - you pass the path to a CasperJS script to the provided 'bin/runCasper.js' script and all of its interactions will be captured:
 
     % bin/runCasper.js casperScript.js
 
