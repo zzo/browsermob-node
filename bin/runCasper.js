@@ -12,7 +12,7 @@ if (!name) {
     process.exit(1);
 }
 
-proxy.selHAR(name, doCasperJSStuff, function(err, data) {
+proxy.cbHAR(name, doCasperJSStuff, function(err, data) {
         if (err) {
             console.error('ERR: ' + err);
         } else {
