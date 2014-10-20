@@ -1,4 +1,4 @@
-NodeJS bindings for broswermob-proxy to programmatically generate HAR files
+NodeJS bindings for browsermob-proxy to programmatically generate HAR files
 ===========================
 
 1. First see [browsermob-proxy](https://github.com/webmetrics/browsermob-proxy)
@@ -87,7 +87,7 @@ EXAMPLE:
 
 ```javascript
 
-var Proxy = require('browsermode-proxy').Proxy;
+var Proxy = require('browsermob-proxy').Proxy;
     , proxy = new Proxy();
 
 proxy.doHAR('http://yahoo.com', function(err, data) {
@@ -221,7 +221,7 @@ var webdriverjs = require("webdriverjs")
                         if(!err) {
                             proxy.startHAR(data.port, 'http://localhost:8004', function (err, resp) {
                                 if (!err) {
-                                    // DO WHATEVER WEB INTERFACTION YOU WANT USING THE PROXY
+                                    // DO WHATEVER WEB INTERACTION YOU WANT USING THE PROXY
                                     doSeleniumStuff(proxyHost + ':' +  data.port, function () {
                                         proxy.getHAR(data.port, function(err, resp) {
                                             if (!err) {
@@ -270,7 +270,7 @@ function doSeleniumStuff(proxy, cb) {
 }
 ```
 
-In this example I am manually controlling the browsermob-proxy - the convenenice methods 'doHAR' and 'cbHAR' do most of this stuff for you so use them!
+In this example I am manually controlling the browsermob-proxy - the convenience methods 'doHAR' and 'cbHAR' do most of this stuff for you so use them!
 
 The sequence is
 
@@ -285,15 +285,15 @@ Full API
 --------
 
 **start([ PORT ], CALLBACK)**
-    
-    Initiailizes a proxy
+
+    Initializes a proxy
 
     PARAMETERS:
 
-        * an optional PORT paramter specifying which port to open up a proxy on - if not provided browsermob will pick one.
-        * CALLBACK(ERROR, DATA) function 
-            1. ERROR string if there was an error 
-            2. DATA object whose only memeber is 'port' - the port the proxy is listening on
+        * an optional PORT parameter specifying which port to open up a proxy on - if not provided browsermob will pick one.
+        * CALLBACK(ERROR, DATA) function
+            1. ERROR string if there was an error
+            2. DATA object whose only member is 'port' - the port the proxy is listening on
 
 **startHAR(PORT, [ NAME, CAPTUREHEADERS, CAPTURECONTENT, CAPTUREBINARYCONTENT ], CALLBACK)**
 
