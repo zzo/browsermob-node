@@ -42,7 +42,7 @@ Proxy.prototype = {
         if (typeof options === "string") {
             options = { name: options};
         }
-        this.start(function(err, data) {
+        this.start(options.port, function(err, data) {
             if (!err) {
                 _this.startHAR(data.port, options.name, options.captureHeaders, options.captureContent, options.captureBinaryContent, function(err, resp) {
                     if (!err) {
