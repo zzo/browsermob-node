@@ -161,7 +161,7 @@ Proxy.prototype = {
         this.doReq('PUT', '/proxy/' + port + '/limit', data, cb);
     },
 
-    doHAR: function(proxyPort, url, cb) {
+    doHAR: function(url, cb, proxyPort) {
         var _this = this,
             port  = proxyPort || this.proxyPort;
         this.start(port, function(err, data) {

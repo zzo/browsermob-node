@@ -26,6 +26,58 @@ proxy.doHAR('http://yahoo.com', function(err, data) {
 });
 ```
 
+Configuring the Proxy Object
+----------------------------
+
+You need to tell the Proxy() constructor where browsermob-proxy is running.  The defaults are running on 'localhost' port 8080:
+
+```javascript
+
+proxy = new Proxy();
+```
+
+Starting browsermob-proxy somewhere else?:
+
+```javascript
+
+proxy = new Proxy({ host: 'some.other.host', port: <some other port> });
+```
+
+**Optionally Specifying a fixed Proxy Port**
+
+When you create new proxies, browsermob-proxy can automatically choose which port to open them on.
+
+Alternatively, you can specify the port you expect proxes to be created on when you create the proxy object by setting it here:
+
+```javascript
+
+proxy = new Proxy({ proxyPort: <some other port> });
+```
+
+*N.B.* You can also specify a port when using the doHAR or cbHAR functions for more fine tuned control
+
+Ports passed to doHAR / cbHAR take override any proxyPort set here. And if no proxy port is set here or passed to those functions, then browsermob-proxy will fall back to automatcially choosing a port and reporting to the user the host:port on which the proxy has been created.
+
+**Optionally Specifying Selenium Host & Port**
+
+IF using Selenium you can specify the host and port. The defaults are 'localhost' port 4444:
+
+```javascript
+
+proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> });
+```
+
+**Bandwidth Limits**
+
+In the Proxy constructor you can specify bandwidth and latency limitations like so:
+
+```javascript
+var proxy = new Proxy( { downloadKbps => 56, uploadKbps => 56, latency 200 } );
+```
+
+Would tell the proxy to act like a 56K modem with 200ms latency.
+
+
 Details
 -------
 
@@ -47,22 +99,6 @@ CasperJS
 
 Grab the latest version of [CasperJS](http://casperjs.org)
 
-Configure the Proxy Object
----------------------------
-
-You need to tell the Proxy() constructor where browsermob-proxy is running.  The defaults are running on 'localhost' port 8080:
-
-```javascript
-
-proxy = new Proxy();
-```
-
-Somewhere else?:
-
-```javascript
-
-proxy = new Proxy({ host: 'some.other.host', port: <some other port> });
-```
 
 Convenience API
 ----------------
@@ -82,6 +118,7 @@ PARAMETERS
     * CALLBACK(ERROR, HAR) function
         1. ERROR string if there was an error 
         2. HAR string data
+    * (optional) PROXY_PORT - port on which proxy will be available (If passed then this port will override any proxyPort set in configuration when creating the proxy)
 
 EXAMPLE:
 
@@ -105,7 +142,7 @@ Convenience method to get HAR data - this method allows you to generate whatever
 
 PARAMETERS
 
-    * OPTIONS is an object with keys 'port', 'name', 'captureHeaders', 'captureContent' and 'captureBinaryContent'; 'port' the port number on which this proxy should be available; 'name' is an abritrary name for this run - like 'yahoo.com' or whatever you like; 'captureHeaders', 'captureContent' and 'captureBinaryContent' expect booleans indicating whether to capture resp headers, body of http transactions, and binary body of transactions. For backwards compatibility reasons, if OPTIONS is a string, it will be interpreted as the name for the run.
+    * OPTIONS is an object with keys 'proxyPort', 'name', 'captureHeaders', 'captureContent' and 'captureBinaryContent'; 'proxyPort' the port number on which this proxy should be available (If passed then this port will override any proxyPort set in configuration when creating the proxy); 'name' is an abritrary name for this run - like 'yahoo.com' or whatever you like; 'captureHeaders', 'captureContent' and 'captureBinaryContent' expect booleans indicating whether to capture resp headers, body of http transactions, and binary body of transactions. For backwards compatibility reasons, if OPTIONS is a string, it will be interpreted as the name for the run.
     * GENERATE_TRAFFIC_CALLBACK(PROXY, DONE_CALLBACK)
 
         PARAMETERS
@@ -184,16 +221,6 @@ Here is it put all together:
 
 This will dump a HAR file named: 'searchYahooCasper.js.har' in the current directory.
 
-Bandwidth Limits
-----------------
-
-In the Proxy constructor you can specify bandwidth and latency limitations like so:
-
-```javascript
-var proxy = new Proxy( { downloadKbps => 56, uploadKbps => 56, latency 200 } );
-```
-
-Would tell the proxy to act like a 56K modem with 200ms latency.
 
 Gory Details
 ------------
