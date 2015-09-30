@@ -142,7 +142,7 @@ Convenience method to get HAR data - this method allows you to generate whatever
 
 PARAMETERS
 
-    * OPTIONS is an object with keys 'proxyPort', 'name', 'captureHeaders', 'captureContent' and 'captureBinaryContent'; 'proxyPort' the port number on which this proxy should be available (If passed then this port will override any proxyPort set in configuration when creating the proxy); 'name' is an abritrary name for this run - like 'yahoo.com' or whatever you like; 'captureHeaders', 'captureContent' and 'captureBinaryContent' expect booleans indicating whether to capture resp headers, body of http transactions, and binary body of transactions. For backwards compatibility reasons, if OPTIONS is a string, it will be interpreted as the name for the run.
+    * OPTIONS is an object with keys 'proxyPort', 'name', 'captureHeaders', 'captureContent' and 'captureBinaryContent'; 'proxyPort' the port number on which this proxy should be available (If passed then this port will override any proxyPort set in configuration when creating the proxy); 'name' is an arbitrary name for this run - like 'yahoo.com' or whatever you like; 'captureHeaders', 'captureContent' and 'captureBinaryContent' expect booleans indicating whether to capture resp headers, body of http transactions, and binary body of transactions. For backwards compatibility reasons, if OPTIONS is a string, it will be interpreted as the name for the run.
     * GENERATE_TRAFFIC_CALLBACK(PROXY, DONE_CALLBACK)
 
         PARAMETERS
