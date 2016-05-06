@@ -72,7 +72,7 @@ proxy = new Proxy({ selHost: 'some.other.host', selPort: <some other port> });
 In the Proxy constructor you can specify bandwidth and latency limitations like so:
 
 ```javascript
-var proxy = new Proxy( { downloadKbps => 56, uploadKbps => 56, latency 200 } );
+var proxy = new Proxy( { downstreamKbps: 56, upstreamKbps: 56, latency: 200 } );
 ```
 
 Would tell the proxy to act like a 56K modem with 200ms latency.
