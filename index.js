@@ -208,6 +208,18 @@ Proxy.prototype = {
         this.doReqWithOptions(options, postData, cb);
     },
 
+    /*
+     *  matchRegex - A matching URL regular expression
+     *  replace - Replacement URL
+     */
+    rewrite: function(port, obj, cb) {
+        var data = '';
+        for (key in obj) {
+            data += key + '=' + obj[key] + '&';
+        }
+        this.doReq("PUT", "/proxy/" + port + "/rewrite", data, cb);
+    },
+
     doReq: function (method, url, postData, cb) {
         var options = {
             host: this.host, port: this.port, method: method, path: url, headers: {
