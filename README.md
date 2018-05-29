@@ -402,3 +402,14 @@ Full API
             * Hosts to remap
             * CALLBACK(ERROR) function
                 1. ERROR string if there was an error
+
+**rewrite(PORT, REWRITE_OBJ, CALLBACK)**
+    
+    Redirecting URL's for proxy on PORT
+
+    PARAMETERS:
+
+        * PORT of proxy for this command
+        * REWRITE_OBJ an object with 2 mandatory keys: matchRegex and replace. Any set keys will be set on the specified proxy port
+        * CALLBACK(ERROR) function
+            1. ERROR string if there was an error
