@@ -1,7 +1,7 @@
 NodeJS bindings for browsermob-proxy to programmatically generate HAR files
 ===========================
 
-1. First see [browsermob-proxy](https://github.com/webmetrics/browsermob-proxy)
+1. First see [browsermob-proxy](https://github.com/lightbody/browsermob-proxy)
 
 2. Then visit [Selenium](http://seleniumhq.org) or [CasperJS](http://casperjs.org)
 
