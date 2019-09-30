@@ -13,6 +13,7 @@
   "dependencies" :
     {
       "webdriverio" : ""
-  }
+  },
+  "license" : "MIT"
 }
 
