@@ -413,3 +413,25 @@ Full API
         * REWRITE_OBJ an object with 2 mandatory keys: matchRegex and replace. Any set keys will be set on the specified proxy port
         * CALLBACK(ERROR) function
             1. ERROR string if there was an error
+
+**filterRequest(PORT, FILTER_DATA, CALLBACK)**
+    
+    Allows intercepting requests for proxy on PORT
+
+    PARAMETERS:
+
+        * PORT of proxy for this command
+        * FILTER_DATA string with code to intercept requests. Javascript request filters have access to the variables `request` (type io.netty.handler.codec.http.HttpRequest), `contents` (type net.lightbody.bmp.util.HttpMessageContents), and `messageInfo` (type net.lightbody.bmp.util.HttpMessageInfo). `messageInfo` contains additional information about the message.
+        * CALLBACK(ERROR) function
+            1. ERROR string if there was an error
+
+**filterResponse(PORT, FILTER_DATA, CALLBACK)**
+    
+    Allows intercepting responses for proxy on PORT
+
+    PARAMETERS:
+
+        * PORT of proxy for this command
+        * FILTER_DATA string with code to intercept responses. Javascript response filters have access to the variables `response` (type io.netty.handler.codec.http.HttpResponse), `contents` (type net.lightbody.bmp.util.HttpMessageContents), and `messageInfo` (type net.lightbody.bmp.util.HttpMessageInfo). As in the request filter, `messageInfo` contains additional information about the message.
+        * CALLBACK(ERROR) function
+            1. ERROR string if there was an error

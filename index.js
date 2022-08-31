@@ -220,6 +220,24 @@ Proxy.prototype = {
         this.doReq("PUT", "/proxy/" + port + "/rewrite", data, cb);
     },
 
+    filterRequest: function (port, data, cb) {
+        var options = {
+            host: this.host, port: this.port, method: 'POST', path: '/proxy/' + port + '/filter/request', headers: {
+                'Content-Type': 'text/plain'
+            }
+        };
+        this.doReqWithOptions(options, data, cb);
+    },
+
+    filterResponse: function (port, data, cb) {
+        var options = {
+            host: this.host, port: this.port, method: 'POST', path: '/proxy/' + port + '/filter/response', headers: {
+                'Content-Type': 'text/plain'
+            }
+        };
+        this.doReqWithOptions(options, data, cb);
+    },
+
     doReq: function (method, url, postData, cb) {
         var options = {
             host: this.host, port: this.port, method: method, path: url, headers: {
