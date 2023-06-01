@@ -311,13 +311,14 @@ The sequence is
 Full API
 --------
 
-**start([ PORT ], CALLBACK)**
+**start([ PORT ], [ TRUSTALLCERTS ], CALLBACK)**
 
     Initializes a proxy
 
     PARAMETERS:
 
         * an optional PORT parameter specifying which port to open up a proxy on - if not provided browsermob will pick one.
+        * an optional TRUSTALLCERTS parameter is a boolean value specifying whether to trust all upstream SSL certificates irrespective of their validity - if not provided will default to false
         * CALLBACK(ERROR, DATA) function
             1. ERROR string if there was an error
             2. DATA object whose only member is 'port' - the port the proxy is listening on
