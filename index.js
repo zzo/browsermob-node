@@ -40,11 +40,12 @@ Proxy.prototype = {
 
     cbHAR:  function(options, selCB, cb) {
         var _this = this,
-            port  = options.proxyPort || this.proxyPort;
+            port  = options.proxyPort || this.proxyPort,
+            trustAllServers = options.trustAllServers || false;
         if (typeof options === "string") {
             options = { name: options};
         }
-        this.start(port, function(err, data) {
+        this.start(port, trustAllServers, function(err, data) {
             if (!err) {
                 _this.startHAR(data.port, options.name, options.captureHeaders, options.captureContent, options.captureBinaryContent, function(err, resp) {
                     if (!err) {
@@ -69,13 +70,17 @@ Proxy.prototype = {
          });
     },
 
-    start: function(port, cb) {
+    start: function(port, trustAllServers, cb) {
         var postData = '';
         if (!cb) {
             cb = port;
         }
         if (typeof(port) === 'number') {
             postData = 'port=' + port;
+        }
+
+        if (typeof trustAllServers == 'boolean') {
+            postData = 'trustAllServers=' + trustAllServers;
         }
 
         this.doReq('POST', '/proxy', postData, function(err, data) {
@@ -161,10 +166,11 @@ Proxy.prototype = {
         this.doReq('PUT', '/proxy/' + port + '/limit', data, cb);
     },
 
-    doHAR: function(url, cb, proxyPort) {
+    doHAR: function(url, cb, proxyPort, trustAllServers) {
         var _this = this,
-            port  = proxyPort || this.proxyPort;
-        this.start(port, function(err, data) {
+            port  = proxyPort || this.proxyPort,
+            trustAllServers = trustAllServers || false;
+        this.start(port, trustAllServers, function(err, data) {
             if (!err) {
                 _this.startHAR(data.port, url, function(err, resp) {
                     if (!err) {
